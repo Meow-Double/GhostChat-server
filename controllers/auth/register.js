@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import UserModel from '../../models/user.js';
 import jwt from 'jsonwebtoken';
+import { getRandomAvatarka } from '../../utils/getRandomAvatarka.js';
 
 export const register = async (req, res) => {
   try {
@@ -9,8 +10,11 @@ export const register = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hash = await bcrypt.hash(password, salt);
 
+    const avatarUrl = getRandomAvatarka();
+
     const doc = new UserModel({
       ...data,
+      avatarUrl,
       passwordHash: hash,
     });
 
@@ -19,7 +23,7 @@ export const register = async (req, res) => {
     const token = jwt.sign(
       {
         email: data.email,
-        id: user._id,
+        _id: user._id,
       },
       process.env.AUTH_SECRET_KEY,
       {

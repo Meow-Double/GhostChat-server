@@ -7,11 +7,15 @@ import { register } from './controllers/auth/register.js';
 import { loginValidation, registerValidation } from './validations/auth.js';
 import { handleValidationErrors } from './utils/handleValidationErrors.js';
 import { login } from './controllers/auth/login.js';
+import { getMe } from './controllers/auth/getMe.js';
+import { checkAuth } from './utils/checkAuth.js';
+import { getUsers } from './controllers/users/users.js';
 
 const api = express();
 
 api.use(express.json());
 api.use(cors({ origin: '*' }));
+api.use('/uploads', express.static('uploads'));
 
 dotenv.config();
 
@@ -22,6 +26,9 @@ mongoose
 
 api.post('/auth/register', registerValidation, handleValidationErrors, register);
 api.post('/auth/login', loginValidation, handleValidationErrors, login);
+api.get('/auth/me', checkAuth, getMe);
+
+api.get('/users', checkAuth, getUsers);
 
 api.listen(SERVER_PORT, () => {
   console.log(SERVER_URL);

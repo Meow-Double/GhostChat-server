@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema(
       type: String,
       require: true,
     },
-    avaratUrl: String,
+    avatarUrl: String,
   },
   { timestamps: true },
 );
