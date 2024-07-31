@@ -9,7 +9,9 @@ import { handleValidationErrors } from './utils/handleValidationErrors.js';
 import { login } from './controllers/auth/login.js';
 import { getMe } from './controllers/auth/getMe.js';
 import { checkAuth } from './utils/checkAuth.js';
+import { getUser } from './controllers/users/getUser.js';
 import { getUsers } from './controllers/users/users.js';
+import { addFriend } from './controllers/users/addFriend.js';
 
 const api = express();
 
@@ -29,6 +31,9 @@ api.post('/auth/login', loginValidation, handleValidationErrors, login);
 api.get('/auth/me', checkAuth, getMe);
 
 api.get('/users', checkAuth, getUsers);
+api.get('/user/:id', getUser);
+
+api.post('/add-friend', checkAuth, addFriend);
 
 api.listen(SERVER_PORT, () => {
   console.log(SERVER_URL);
