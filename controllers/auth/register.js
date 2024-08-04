@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import UserModel from '../../models/user.js';
 import jwt from 'jsonwebtoken';
 import { getRandomAvatarka } from '../../utils/getRandomAvatarka.js';
+import ChatModel from '../../models/chat.js';
 
 export const register = async (req, res) => {
   try {
@@ -30,6 +31,9 @@ export const register = async (req, res) => {
         expiresIn: '30d',
       },
     );
+
+    const chats = new ChatModel({ user: user._id });
+    chats.save();
 
     const { passwordHash, ...userData } = user._doc;
     return res.json({ ...userData, token });
